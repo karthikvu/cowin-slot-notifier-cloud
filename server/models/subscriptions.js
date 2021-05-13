@@ -5,6 +5,8 @@ const findByUserId = (id) => db.any('SELECT * FROM subscriptions where userid = 
 const findByName = name => db.any('SELECT * FROM subscriptions where name = $1', name)
 const findByBUNumber = email => db.any('SELECT * FROM subscriptions where email = $1', email)
 const findByPhone = phone => db.any('SELECT * FROM subscriptions where phone = $1 or phoneAlt = $1', phone)
+const updateNotifCount = (userid, pincode, age) => db.any('UPDATE subscriptions SET "notifCount" = "notifCount" + 1 where userid = $1 and pincode = $2 and age = $3', [userid, pincode, age])
+const resetNotifCount = (userid, pincode, age) => db.any('UPDATE subscriptions SET "notifCount" = 0 where userid = $1 and pincode = $2 and age = $3', [userid, pincode, age])
 const create = (subscription) => {
     return db.query(`INSERT INTO subscriptions (
         userid,
@@ -17,7 +19,8 @@ const create = (subscription) => {
         active,
         deleted,
         "createdAt",
-        "updatedAt"
+        "updatedAt",
+        "notifCount"
     ) VALUES (
         $[userId],
         $[name],
@@ -29,7 +32,8 @@ const create = (subscription) => {
         true,
         false,
         now(),
-        now()
+        now(),
+        0
 ) RETURNING *`, subscription)
 }
 const update = (id, patient) => {}
@@ -41,5 +45,7 @@ module.exports = {
     findByBUNumber, 
     findByName, 
     findByPhone,
-    create
+    create,
+    updateNotifCount,
+    resetNotifCount
 }

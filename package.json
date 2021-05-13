@@ -7,7 +7,7 @@
     "postinstall": "npm --prefix client install && npm --prefix server install",
     "heroku-postbuild": "npm run --prefix client build",
     "start:dev": "concurrently 'npm run --prefix client start' 'npm run --prefix server start'",
-    "start": "cd server && NODE_ENV=production node app.js"
+    "start": "cd server && NODE_ENV=production node ./bin/www"
   },
   "author": "Karthik VU <karthik.vu@live.com>",
   "license": "MIT",

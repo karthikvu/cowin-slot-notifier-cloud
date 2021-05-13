@@ -6,7 +6,7 @@ import axios from 'axios'
 import Dashboard from './pages/Dashboard';
 
 export const ProtectedRoutes = () => {
-    const { isAuthenticated, user, error,isLoading, getAccessTokenSilently } = useAuth0();
+    const { isAuthenticated, user, error,isLoading } = useAuth0();
     console.log({isAuthenticated, user, error, isLoading})
      
     if(isLoading) {

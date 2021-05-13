@@ -18,8 +18,11 @@ const apiCall = (pincode, date) => {
         'X-Request-ID': Date.now(),
     }}).then(resp => resp.data).catch(err => console.error(err))
 }
-const main = async ({ pincode, age, slack, email, name, alreadyNotified }) => {
-    console.log(pincode)
+const main = async ({ userid, pincode, age, slack, email, name, notifCount }) => {
+    if(notifCount > 3) {
+        console.log(`Max notifications reached already for ${userid}, ${pincode}, ${age}`)
+        return
+    }
     // if(notifyCount === 0 ) return
     if(!pincode) { return }
     const date = getDate()
@@ -34,12 +37,13 @@ const main = async ({ pincode, age, slack, email, name, alreadyNotified }) => {
         })
     })
     available.length ? console.table(available) : console.error(`${pincode} ${new Date()}: None found !`)
-    if(available.length === 0){
+    if(available.length > 0){
         // notify(`Vaccine available in ${resp.centers.length} centers !`)
         // Read : https://bit.ly/3bbBLKN
+        // update notyif count
+        subscriptions.updateNotifCount(userid, pincode, age)
         slack && slackService.notify(slack, available, email)
         email && emailService.notify(email, pincode, name)
-        // notifyCount--
     }
 }
 

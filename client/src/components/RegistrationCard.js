@@ -3,8 +3,8 @@ import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Typography 
 
 import "./registrationCard.scss"
 
-export const RegistrationCard = ({ name, phone, age, pincode, slack, email, vaccine, date }) => {
-    return (
+export const RegistrationCard = ({ userid, name, phone, age, pincode, slack, email, vaccine, date, notifCount, renewSubscription}) => {
+      return (
         <Card className={'registration-card-material'}>
         <CardHeader
             avatar={
@@ -21,13 +21,19 @@ export const RegistrationCard = ({ name, phone, age, pincode, slack, email, vacc
             {slack ? <div> Slack Intergration</div> : null}
             {email ? <div> Emails at {email} </div> : null}
           </Typography>
+          {notifCount > 3 && <Typography variant="body2" color="red" component="p" className="error-text">
+              You have reached max number of notifications
+          </Typography>}
         </CardContent>
       <CardActions>
         <Button size="small" color="primary" disabled>
           Delete
         </Button>
         <Button size="small" color="primary" disabled>
-          Disable
+          Pause
+        </Button>
+        <Button size="small" color="primary" disabled={notifCount <= 3} onClick={renewSubscription}>
+          Renew
         </Button>
       </CardActions>
      </Card>

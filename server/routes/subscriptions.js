@@ -11,8 +11,27 @@ router.get('/', async function(req, res, next) {
 router.post('/', async function(req, res, next) {
     const body = req.body
     body.userId = req.user
-    const d = await subscriptions.create(body)
-    res.status(200).json(d)
+    try {
+        const d = await subscriptions.create(body)
+        
+    } catch(e) {
+        console.error(e)
+        if(e.message.includes('userid_pincode_age')){
+            res.status(409).send(e)
+        } else {
+            res.status(500).send(e)
+        }
+    }
+});
+
+router.post('/renew', async function(req, res, next) {
+    const { pincode, age} = req.body
+    try {
+         await subscriptions.resetNotifCount(req.user, pincode, age)
+         res.status(200).json({})
+    } catch(e) {
+        res.status(500).send(e)
+    }
 });
 
 router.patch('/:id', function(req, res, next) {

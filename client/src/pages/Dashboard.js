@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import FormDialog from '../components/Form'
 import { RegistrationCard } from '../components/RegistrationCard'
 import CustomizedSnackbars from '../components/SnackBar'
-import { createSubscription, getSubscription } from '../utils/api'
+import { createSubscription, getSubscription, renewSubscription } from '../utils/api'
 import "./dashboard.scss"
 const data = [{
 	name: 'Karthik VU',
@@ -51,12 +51,30 @@ export default function Dashboard() {
             setSnackMessage("Successfully subscribed !")
             setShowSnack(true)
         } catch (err) {
+            const isConflict = err.response.status === 409
             setSnackType("error")
-            setSnackMessage("Failed to subscribe ! Retry later")
+            setSnackMessage(isConflict ? "Subscription already exists for this pincode and age" : "Failed to subscribe ! Retry later")
             setShowSnack(true)
         }
 
         setTimeout(closeSnack, 5000)
+    }
+
+    const renewSubs = async ({userid, pincode, age}) => {
+        console.log(userid, pincode, age)
+        try { 
+            await renewSubscription(userid, pincode, age)
+            setSnackType("success")
+            setSnackMessage("Successfully renewed !")
+            setShowSnack(true)
+            const { data: subscriptions } = await getSubscription()
+            setSubscriptions(subscriptions)
+        } catch (err) {
+            setSnackType("error")
+            setSnackMessage("Failed to renew ! Retry later")
+            setShowSnack(true)
+            setTimeout(closeSnack, 5000)
+        }
     }
     return (
         <div className="dashboard">
@@ -67,7 +85,7 @@ export default function Dashboard() {
             </Button>
             </div>
             <Grid container spacing={1} className="cards">
-                {subscriptions.map(item =>  <Grid item xs={12} sm={4} lg={3}><RegistrationCard {...item} /></Grid>)}
+                {subscriptions.map(item => <Grid item xs={12} sm={4} lg={3}><RegistrationCard {...item} renewSubscription={() => renewSubs(item)} /></Grid>)}
                 {subscriptions.length === 0 && <Grid item xs={12}>You dont have any alerts subscribed</Grid>}
             </Grid>
             <FormDialog open={showForm} handleClose={() => setShowForm(false)} submit={handleSubmit}/>
