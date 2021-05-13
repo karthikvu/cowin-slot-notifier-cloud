@@ -1,0 +1,15 @@
+:root { --header-height: 64px; }
+
+.login-page {
+    display: flex;
+    width: 100vw;
+    height: calc(100vh - var(--header-height));
+
+    .left {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+}
