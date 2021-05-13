@@ -2,6 +2,9 @@ const { db } = require('./database')
 const subscriptions = require('../models/subscriptions')
 const axios = require('axios')
 
+const slackService = require('./slack')
+const emailService = require('./email')
+
 const getDate = () => {
     let today = new Date()
     let date = today.getDate()
@@ -15,7 +18,7 @@ const apiCall = (pincode, date) => {
         'X-Request-ID': Date.now(),
     }}).then(resp => resp.data).catch(err => console.error(err))
 }
-const main = async ({ pincode, age, slack, email}) => {
+const main = async ({ pincode, age, slack, email, name, alreadyNotified }) => {
     console.log(pincode)
     // if(notifyCount === 0 ) return
     if(!pincode) { return }
@@ -34,8 +37,8 @@ const main = async ({ pincode, age, slack, email}) => {
     if(available.length > 0){
         // notify(`Vaccine available in ${resp.centers.length} centers !`)
         // Read : https://bit.ly/3bbBLKN
-        slack && axios.post(slack, {data : JSON.stringify(available)})
-        email && console.log("TODO: email noti")
+        slack && slackService.notify(slack, available)
+        email && emailService.notify(emial, pincode, name)
         // notifyCount--
     }
 }

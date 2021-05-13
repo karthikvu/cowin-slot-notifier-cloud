@@ -1,7 +1,5 @@
 const nodemailer = require("nodemailer");
 
-let testAccount = await nodemailer.createTestAccount();
-
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport("SMTP",{
     service: "Gmail",
@@ -10,8 +8,6 @@ let transporter = nodemailer.createTransport("SMTP",{
         pass: process.env.GMAIL_PASSWORD
     }
 });
-
-
 
 const notify = (to, pincode, name) => {
     var mailOptions = {
@@ -22,13 +18,13 @@ const notify = (to, pincode, name) => {
     }
   
     // send mail with defined transport object
-    smtpTransport.sendMail(mailOptions, function(error, response){
+    transporter.sendMail(mailOptions, function(error, response){
         if(error){
             console.log(error);
-        }else{
-            res.redirect('/');
+        } else{
+           console.log(`Email dispatched to ${to}`)
         }
     });
-
-  
 }
+
+module.exports = { notify }
