@@ -1,15 +1,45 @@
-:root { --header-height: 64px; }
+:root { --header-height: 56px; }
 
 .login-page {
     display: flex;
-    width: 100vw;
+    width: 100vw;  
     height: calc(100vh - var(--header-height));
+    background-image: url('../login-bg.jpeg');
+
+    .blur {
+        backdrop-filter: brightness(0.3);
+    }
 
     .left {
-        display: flex;
         flex: 1;
-        align-items: center;
-        justify-content: center;
+        justify-content: left;
         height: 100%;
+
+        .hero-text {
+            font-size: 32px;
+            color: #d0d0d0;
+            font-family: 'Roboto';
+            text-transform: uppercase;
+            font-weight: 900;
+            padding: 30px;
+            padding-bottom: 10px;
+            max-width: 60vw;
+            margin-top: 25vh;
+        }
+
+        .big-button {
+            width: 200px;
+            height: 56px;
+            border-radius: 10px;
+            background: white;
+            font-size: 32px;
+            text-align: center;
+            line-height: 56px;
+            margin-left: 30px;
+            text-transform: capitalize;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
     }
 }

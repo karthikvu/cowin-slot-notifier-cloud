@@ -9,7 +9,7 @@ var debug = require('debug')('server:server');
 var http = require('http');
 const Postgrator = require('postgrator');
 const { connectionString } = require('../lib/database');
-
+const { initializeScheduler } = require('../lib/scheduler')
 /**
  * Get port from environment and store in Express.
  */
@@ -38,6 +38,7 @@ var server = http.createServer(app);
    .then((appliedMigrations) => {
      console.log(`Applied ${appliedMigrations.length} migrations. Starting server...`)
      server.listen(port);
+     initializeScheduler()
      server.on('error', onError);
      server.on('listening', onListening);     
    })
