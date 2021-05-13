@@ -34,18 +34,18 @@ const main = async ({ pincode, age, slack, email, name, alreadyNotified }) => {
         })
     })
     available.length ? console.table(available) : console.error(`${pincode} ${new Date()}: None found !`)
-    if(available.length > 0){
+    if(available.length === 0){
         // notify(`Vaccine available in ${resp.centers.length} centers !`)
         // Read : https://bit.ly/3bbBLKN
-        slack && slackService.notify(slack, available)
-        email && emailService.notify(emial, pincode, name)
+        slack && slackService.notify(slack, available, email)
+        email && emailService.notify(email, pincode, name)
         // notifyCount--
     }
 }
 
 const start = async () => {
     const allRecords = await subscriptions.findAll()
-    allRecords.forEach(({ pincode }) => main(pincode))
+    allRecords.forEach(main)
 }
 
 module.exports = { 
