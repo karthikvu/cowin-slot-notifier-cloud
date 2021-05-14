@@ -15,8 +15,9 @@ const getDate = () => {
 const apiCall = (pincode, date) => {
     return axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=${date}&t=${Date.now()}`, { headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
-        'X-Request-ID': Date.now(),
-    }}).then(resp => resp.data).catch(err => console.error(err))
+        'origin': 'https://www.cowin.gov.in',
+        'referer': 'https://www.cowin.gov.in/'
+    }}).then(resp => resp.data).catch(err => console.error(err.status))
 }
 const main = async ({ userid, pincode, age, slack, email, name, notifCount }) => {
     if(notifCount > 3) {
@@ -27,7 +28,6 @@ const main = async ({ userid, pincode, age, slack, email, name, notifCount }) =>
     if(!pincode) { return }
     const date = getDate()
     const resp = await apiCall(pincode, date)
-    console.log(`Resp : `, resp.status)
     const available = []
     resp.centers && resp.centers.forEach(center => {
         center.sessions.forEach(session => {
