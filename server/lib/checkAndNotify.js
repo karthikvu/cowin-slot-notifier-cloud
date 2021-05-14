@@ -27,8 +27,9 @@ const main = async ({ userid, pincode, age, slack, email, name, notifCount }) =>
     if(!pincode) { return }
     const date = getDate()
     const resp = await apiCall(pincode, date)
+    console.log(`Resp : `, resp.status)
     const available = []
-    resp.centers.forEach(center => {
+    resp.centers && resp.centers.forEach(center => {
         center.sessions.forEach(session => {
             if(session.min_age_limit === age && session.available_capacity > 0) {
                 let { date, available_capacity, vaccine, slots } = session
