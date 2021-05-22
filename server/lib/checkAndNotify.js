@@ -24,6 +24,18 @@ const apiCall = (pincode, date) => {
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36",
           origin: "https://www.cowin.gov.in",
           referer: "https://www.cowin.gov.in/",
+          "X-ProxyUser-Ip": "203.0.113.19",
+          accept: "application/json, text/plain, */*",
+          "accept-language":
+            "en,es-AR;q=0.9,es;q=0.8,vi;q=0.7,en-US;q=0.6,kn;q=0.5",
+          "sec-ch-ua":
+            '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"',
+          "sec-ch-ua-mobile": "?0",
+          "sec-fetch-dest": "empty",
+          "sec-fetch-mode": "cors",
+          "sec-fetch-site": "cross-site",
+          referrer: "https://www.cowin.gov.in/",
+          referrerPolicy: "strict-origin-when-cross-origin",
         },
       }
     )
